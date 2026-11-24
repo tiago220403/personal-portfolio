@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tiago Portella — Web Developer</title>
+<meta name="description" content="Tiago Portella — Web & Front-end Developer em Rio de Janeiro, Brasil." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#050505;
+    --fg:#f4f3f0;
+    --muted: 0 0% 100%;
+    --line: hsla(0,0%,100%,.14);
+  }
+  *{box-sizing:border-box}
+  html,body{background:var(--bg);}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    color:var(--fg);
+    font-family:'Inter',-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:clip;
+    height:100vh;
+    height:100dvh;
+  }
+  ::selection{background:hsla(0,0%,100%,.22);color:#fff}
+  a{color:inherit;text-decoration:none}
+  .mono{font-family:'JetBrains Mono',monospace}
+
+  .grain{
+    position:fixed; inset:0; z-index:40; pointer-events:none;
+    opacity:.05; mix-blend-mode:overlay;
+  }
+
+  .shell{
+    position:relative;
+    min-height:100vh; min-height:100dvh;
+    display:flex; flex-direction:column;
+    padding: 28px 24px 24px;
+    max-width:1400px; margin:0 auto;
+  }
+  @media(min-width:900px){
+    .shell{ padding: 40px 56px 40px; }
+  }
+
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px;
+  }
+  .brand{
+    font-size:14px; letter-spacing:.04em; font-weight:500;
+  }
+  .brand sup{font-size:9px; opacity:.5; margin-left:1px}
+  .navlinks{
+    display:flex; align-items:center; gap:28px;
+    font-size:13px; letter-spacing:.02em;
+  }
+  .navlinks a{opacity:.72; transition:opacity .25s ease}
+  .navlinks a:hover{opacity:1}
+  .status{
+    display:flex; align-items:center; gap:8px;
+    font-size:12px; letter-spacing:.02em; opacity:.7;
+  }
+  .status .dot{
+    width:6px;height:6px;border-radius:50%;background:#f4f3f0;
+    box-shadow:0 0 0 0 hsla(0,0%,100%,.5);
+    animation:pulse 2.6s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{box-shadow:0 0 0 0 hsla(0,0%,100%,.35)}
+    50%{box-shadow:0 0 0 5px hsla(0,0%,100%,0)}
+  }
+  .navlinks{display:none}
+  @media(min-width:760px){ .navlinks{display:flex} }
+
+  main{
+    flex:1;
+    display:grid;
+    grid-template-columns: 1fr;
+    align-items:center;
+    gap:40px;
+    padding-top:48px;
+  }
+  @media(min-width:900px){
+    main{ grid-template-columns: minmax(0,1fr) 230px; gap:24px; padding-top:0; }
+  }
+
+  .col-main{ min-width:0; }
+
+  .eyebrow{
+    font-size:12px; letter-spacing:.22em; text-transform:uppercase;
+    opacity:.58; margin:0 0 22px; font-weight:500;
+  }
+  .eyebrow .sep{opacity:.5; margin:0 .5em}
+
+  h1{
+    margin:0 0 26px;
+    font-weight:500;
+    font-size:clamp(3rem, 10vw, 7.5rem);
+    line-height:.92;
+    letter-spacing:-.03em;
+  }
+  .ml{ display:block; overflow:hidden; padding:.05em 0 .12em; margin:-.05em 0 -.12em; }
+  .ml > span{
+    display:block;
+    transform:translateY(110%);
+    animation:ml-up .9s cubic-bezier(.22,1,.36,1) both;
+    animation-delay: calc(.25s + var(--i) * .12s);
+  }
+  @keyframes ml-up{ to{ transform:translateY(0) } }
+
+  .sub{
+    max-width:30rem;
+    font-size:clamp(15px,1.6vw,17px);
+    line-height:1.65;
+    color:hsla(0,0%,100%,.66);
+    margin:0 0 34px;
+    opacity:0; transform:translateY(16px);
+    animation:fadeRise .9s cubic-bezier(.22,1,.36,1) .72s both;
+  }
+  @keyframes fadeRise{ to{ opacity:1; transform:translateY(0) } }
+
+  .cta-row{
+    display:flex; flex-wrap:wrap; align-items:center; gap:22px;
+    opacity:0; transform:translateY(16px);
+    animation:fadeRise .9s cubic-bezier(.22,1,.36,1) .92s both;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--fg); color:#060606;
+    font-size:14px; font-weight:500; letter-spacing:.01em;
+    padding:13px 24px; border-radius:999px;
+    transition:transform .35s cubic-bezier(.22,1,.36,1), background .3s ease;
+  }
+  .btn:hover{ transform:translateY(-2px); background:#fff; }
+  .btn:active{ transform:scale(.97); }
+  .btn svg{ transition:transform .3s cubic-bezier(.22,1,.36,1) }
+  .btn:hover svg{ transform:translate(2px,-2px) }
+
+  .link{
+    font-size:13px; letter-spacing:.02em; opacity:.7;
+    border-bottom:1px solid var(--line); padding-bottom:3px;
+    transition:opacity .25s ease, border-color .25s ease;
+  }
+  .link:hover{ opacity:1; border-color:hsla(0,0%,100%,.45) }
+
+  .contact-line{
+    margin-top:30px;
+    font-size:12.5px; letter-spacing:.02em; color:hsla(0,0%,100%,.42);
+    display:flex; flex-wrap:wrap; gap:6px 14px;
+    opacity:0; transform:translateY(12px);
+    animation:fadeRise .9s cubic-bezier(.22,1,.36,1) 1.08s both;
+  }
+  .contact-line b{ color:hsla(0,0%,100%,.6); font-weight:500 }
+
+  .cascade{
+    display:flex; flex-direction:column; align-items:flex-start; gap:10px;
+    padding-top:4px;
+  }
+  @media(min-width:900px){
+    .cascade{ align-items:flex-end; }
+  }
+  .cascade .lbl{
+    font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+    opacity:.42; margin-bottom:8px;
+    opacity:0; animation:tagIn .7s cubic-bezier(.22,1,.36,1) .5s both;
+  }
+  .tag{
+    font-size:12.5px; letter-spacing:.02em;
+    padding:7px 14px; border-radius:999px;
+    border:1px solid var(--line);
+    color:hsla(0,0%,100%,.78);
+    white-space:nowrap;
+    opacity:0;
+    transform:translateY(-22px);
+    animation:tagIn .65s cubic-bezier(.22,1,.36,1) both;
+    animation-delay: calc(.62s + var(--i) * .09s);
+    will-change:transform,opacity;
+  }
+  @keyframes tagIn{ to{ opacity:1; transform:translateY(0) } }
+
+  footer{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:36px; margin-top:28px;
+    border-top:1px solid var(--line);
+    font-size:11.5px; letter-spacing:.02em; color:hsla(0,0%,100%,.4);
+    opacity:0; animation:fadeRise .9s cubic-bezier(.22,1,.36,1) 1.2s both;
+  }
+  .scrolldown{
+    display:flex; align-items:center; gap:10px;
+  }
+  .scrolldown .bar{
+    width:1px; height:26px; background:hsla(0,0%,100%,.25);
+    position:relative; overflow:hidden;
+  }
+  .scrolldown .bar::after{
+    content:''; position:absolute; left:0; top:-100%; width:100%; height:100%;
+    background:#f4f3f0;
+    animation:trickle 2.4s ease-in-out infinite;
+  }
+  @keyframes trickle{
+    0%{ top:-100% } 55%{ top:100% } 100%{ top:100% }
+  }
+
+  .section{
+    position:relative;
+    max-width:1400px; margin:0 auto;
+    padding:100px 24px;
+    border-top:1px solid var(--line);
+  }
+  @media(min-width:900px){ .section{ padding:140px 56px; } }
+
+  .section-head{
+    display:flex; flex-direction:column; gap:14px;
+    margin-bottom:56px;
+  }
+  .section-num{
+    font-size:11px; letter-spacing:.2em; opacity:.4; font-family:'JetBrains Mono',monospace;
+  }
+  .section h2{
+    margin:0; font-weight:500; letter-spacing:-.02em; line-height:.98;
+    font-size:clamp(2rem,5vw,3.4rem);
+  }
+
+  .about-grid{ display:grid; gap:48px; }
+  @media(min-width:900px){ .about-grid{ grid-template-columns:1.1fr .9fr; gap:64px; } }
+  .about-copy p{
+    font-size:clamp(16px,1.6vw,19px); line-height:1.75; color:hsla(0,0%,100%,.7);
+    max-width:36rem; margin:0 0 20px;
+  }
+  .stat-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:28px 24px; }
+  .stat{ border-top:1px solid var(--line); padding-top:14px; }
+  .stat .n{ font-size:clamp(28px,4vw,42px); font-weight:300; letter-spacing:-.02em; display:block; }
+  .stat .l{ font-size:12px; opacity:.5; letter-spacing:.02em; margin-top:4px; display:block; max-width:16ch; }
+
+  .timeline{ display:flex; flex-direction:column; }
+  .trow{
+    display:grid; grid-template-columns:1fr; gap:10px;
+    padding:28px 0; border-top:1px solid var(--line);
+  }
+  .trow:last-child{ border-bottom:1px solid var(--line); }
+  @media(min-width:760px){ .trow{ grid-template-columns:200px 1fr; gap:32px; } }
+  .trow .when{ font-size:12.5px; letter-spacing:.04em; opacity:.46; font-family:'JetBrains Mono',monospace; white-space:nowrap; }
+  .trow .role{ font-size:clamp(18px,2.2vw,22px); font-weight:500; letter-spacing:-.01em; margin:0 0 8px; }
+  .trow .org{ opacity:.55; font-weight:400; }
+  .trow .desc{ font-size:14.5px; line-height:1.65; color:hsla(0,0%,100%,.6); max-width:42rem; margin:0; }
+
+  .edu-row{
+    display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px 24px;
+    padding:24px 0; border-top:1px solid var(--line);
+  }
+  .edu-row:last-child{ border-bottom:1px solid var(--line); }
+  .edu-row .what{ font-size:clamp(17px,2vw,20px); font-weight:500; }
+  .edu-row .where{ opacity:.52; font-size:14px; font-weight:400; }
+  .edu-row .when{ font-size:12.5px; opacity:.42; font-family:'JetBrains Mono',monospace; align-self:center; white-space:nowrap; }
+
+  .contact-sec{ text-align:left; }
+  .contact-sec h2{ font-size:clamp(2.4rem,7vw,5.2rem); line-height:.96; max-width:16ch; }
+  .contact-actions{ display:flex; flex-wrap:wrap; gap:18px; margin-top:40px; align-items:center; }
+
+  .page-footer{
+    display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    max-width:1400px; margin:0 auto; padding:28px 24px 40px;
+    font-size:11.5px; letter-spacing:.02em; color:hsla(0,0%,100%,.38);
+  }
+  @media(min-width:900px){ .page-footer{ padding:28px 56px 48px; } }
+  .page-footer a{ opacity:.7; border-bottom:1px solid var(--line); padding-bottom:2px; transition:opacity .25s ease; }
+  .page-footer a:hover{ opacity:1; }
+
+  .toast{
+    position:fixed; left:50%; bottom:28px; z-index:60;
+    transform:translate(-50%,16px); opacity:0; pointer-events:none;
+    background:var(--fg); color:#060606; font-size:13px; font-weight:500;
+    padding:11px 20px; border-radius:999px;
+    transition:opacity .3s cubic-bezier(.22,1,.36,1), transform .3s cubic-bezier(.22,1,.36,1);
+  }
+  .toast.show{ opacity:1; transform:translate(-50%,0); }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{ animation:none !important; transition:none !important; }
+    .ml > span{ transform:none; }
+    .sub,.cta-row,.contact-line,footer,.tag,.cascade .lbl{ opacity:1 !important; transform:none !important; }
+    .dot{ box-shadow:none !important; }
+  }
+
+  html{scroll-padding-top:24px}
+  .shell, .section{isolation:isolate}
+  .story-progress{
+    position:fixed; z-index:50; top:0; left:0; width:100%; height:2px;
+    pointer-events:none; opacity:0; transform:scaleX(0); transform-origin:left center;
+    background:var(--fg);
+  }
+  .section::before{
+    content:""; position:absolute; top:-1px; left:0; width:100%; height:1px;
+    background:linear-gradient(90deg,hsla(0,0%,100%,.72),transparent 85%);
+    transform:scaleX(var(--chapter-progress,0)); transform-origin:left center; pointer-events:none;
+  }
+  .spotlight{
+    position:absolute; inset:0; overflow:hidden; z-index:-1; pointer-events:none;
+  }
+  .spotlight::after{
+    content:""; position:absolute; inset:0; opacity:0; transition:opacity .32s ease;
+    background:radial-gradient(260px circle at var(--spot-x,50%) var(--spot-y,50%),
+      rgb(255 255 255 / var(--spot-strength,.07)), transparent 100%);
+  }
+  .is-lit > .spotlight::after{opacity:1}
+  .cursor-halo{
+    position:fixed; top:0; left:0; width:30px; height:30px; z-index:41;
+    border-radius:50%; pointer-events:none; opacity:0;
+    background:radial-gradient(circle,rgb(255 255 255 / .17),transparent 68%);
+  }
+  .tag, .stat, .trow, .edu-row{position:relative; isolation:isolate; --spot-strength:.15}
+  .tag, .stat, .trow, .edu-row{transition:border-color .25s ease}
+  .tag.is-lit,.stat.is-lit,.trow.is-lit,.edu-row.is-lit{border-color:hsla(0,0%,100%,.45)}
+  .trow > .spotlight::after,.edu-row > .spotlight::after{
+    background:radial-gradient(220px circle at var(--spot-x,50%) var(--spot-y,50%),rgb(255 255 255 / .09),transparent);
+  }
+  :where(a,button):focus-visible{outline:2px solid var(--fg); outline-offset:5px}
+  @media(min-width:1000px){
+    #work{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.35fr); gap:64px}
+    #work .section-head{position:sticky; top:18vh; align-self:start; margin-bottom:0}
+    #work .trow{grid-template-columns:1fr; gap:14px; padding:36px 0}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .story-progress,.cursor-halo,.spotlight{display:none}
+  }
+</style>
+</head>
+<body id="top">
+<div class="story-progress" aria-hidden="true"></div>
+<div class="cursor-halo" aria-hidden="true"></div>
+
+<svg class="grain" aria-hidden="true">
+  <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/></filter>
+  <rect width="100%" height="100%" filter="url(#n)"/>
+</svg>
+
+<div class="shell">
+
+  <nav>
+    <div class="brand">TP<sup>®</sup></div>
+    <div class="navlinks">
+      <a href="#work">Experiência</a>
+      <a href="#about">Sobre</a>
+      <a href="#contact">Contato</a>
+    </div>
+    <div class="status"><span class="dot"></span>Disponível para projetos</div>
+  </nav>
+
+  <main>
+    <div class="col-main">
+      <p class="eyebrow">Web Developer<span class="sep">/</span>Front-end<span class="sep">/</span>Rio de Janeiro, BR</p>
+
+      <h1 data-split aria-label="Tiago Portella">
+        <span class="ml"><span style="--i:0">Tiago</span></span>
+        <span class="ml"><span style="--i:1">Portella</span></span>
+      </h1>
+
+      <p class="sub">Desenvolvo aplicações web interativas com foco em design centrado no usuário — interfaces rápidas, acessíveis e sem ruído, do primeiro esboço ao deploy.</p>
+
+      <div class="cta-row">
+        <a class="btn" href="mailto:titicacoo005@gmail.com" data-copy-email>
+          Entrar em contato
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="link" href="#work">Ver experiência ↓</a>
+      </div>
+
+      <div class="contact-line">
+        <span><b>Email</b> · titicacoo005@gmail.com</span>
+        <span><b>Tel</b> · +55 21 98927-5740</span>
+      </div>
+    </div>
+
+    <aside class="cascade" aria-label="Principais tecnologias">
+      <span class="lbl">Stack</span>
+      <span class="tag" style="--i:0">React</span>
+      <span class="tag" style="--i:1">Vue</span>
+      <span class="tag" style="--i:2">JavaScript</span>
+      <span class="tag" style="--i:3">Tailwind CSS</span>
+      <span class="tag" style="--i:4">UX / UI</span>
+      <span class="tag" style="--i:5">API &amp; SQL</span>
+    </aside>
+  </main>
+
+  <footer>
+    <span class="mono" style="opacity:.5">01 / 04</span>
+    <span class="scrolldown"><span class="bar"></span>scroll</span>
+  </footer>
+
+</div>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <div class="section-head" data-reveal style="--ry:24px">
+    <span class="section-num mono">02 — Sobre</span>
+    <h2>Interfaces rápidas,<br />decisões guiadas por dados.</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-copy">
+      <p data-reveal style="--rd:.05s">Experiência no desenvolvimento e otimização de aplicações web interativas, com foco em design centrado no usuário e funcionalidade fluida. Construo páginas responsivas com HTML, CSS e JavaScript, e aplicações de página única escaláveis com React e Vue.</p>
+      <p data-reveal style="--rd:.12s">Atuo também em UX/UI, SEO, testes A/B e CRO — e uso Lighthouse e Chrome DevTools para eliminar gargalos de performance antes que o usuário sinta.</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat" data-reveal style="--rd:0ms"><span class="n mono">+30%</span><span class="l">engajamento dos usuários</span></div>
+      <div class="stat" data-reveal style="--rd:90ms"><span class="n mono">−40%</span><span class="l">tempo de carregamento</span></div>
+      <div class="stat" data-reveal style="--rd:180ms"><span class="n mono">90+</span><span class="l">score Lighthouse</span></div>
+      <div class="stat" data-reveal style="--rd:270ms"><span class="n mono">−15%</span><span class="l">taxa de rejeição</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="work" class="section">
+  <div class="section-head" data-reveal style="--ry:24px">
+    <span class="section-num mono">03 — Experiência</span>
+    <h2>No código, no detalhe.</h2>
+  </div>
+  <div class="timeline">
+    <div class="trow" data-reveal style="--rd:0ms">
+      <div class="when">Jan 2024 — Atual</div>
+      <div>
+        <p class="role">Desenvolvedor Front-End Júnior <span class="org">· Freelance</span></p>
+        <p class="desc">Construção e otimização de aplicações web para clientes — layouts responsivos, integração de API, estilo com Tailwind CSS e revisão de código com foco em performance e acessibilidade (WCAG).</p>
+      </div>
+    </div>
+    <div class="trow" data-reveal style="--rd:90ms">
+      <div class="when">Formação prática</div>
+      <div>
+        <p class="role">DevQuest <span class="org">· Dev em Dobro</span></p>
+        <p class="desc">Programa de prática em desenvolvimento front-end, com controle de versão via Git e colaboração em projetos reais em equipe.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" class="section">
+  <div class="section-head" data-reveal style="--ry:24px">
+    <span class="section-num mono">04 — Formação</span>
+    <h2>Base acadêmica.</h2>
+  </div>
+  <div class="edu-row" data-reveal style="--rd:0ms">
+    <div>
+      <div class="what">Ciências da Computação</div>
+      <div class="where">Centro Universitário IBMR</div>
+    </div>
+    <div class="when">2022 — 2026</div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section contact-sec">
+  <div class="section-head" data-reveal style="--ry:24px; margin-bottom:0">
+    <span class="section-num mono">05 — Contato</span>
+    <h2>Vamos construir a próxima interface.</h2>
+  </div>
+  <div class="contact-actions" data-reveal style="--rd:.1s">
+    <a class="btn" href="mailto:titicacoo005@gmail.com" data-copy-email>
+      titicacoo005@gmail.com
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a class="link" href="tel:+5521989275740">+55 21 98927-5740</a>
+    <a class="link" href="https://www.linkedin.com/in/tiago-portella-53aa76264/" target="_blank" rel="noopener">LinkedIn ↗</a>
+  </div>
+</section>
+
+<footer class="page-footer">
+  <span>© 2026 Tiago Portella — Rio de Janeiro, Brasil</span>
+  <a href="#top">Voltar ao topo ↑</a>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/ScrollTrigger.min.js"></script>
+<script>
+  const { gsap, ScrollTrigger } = window;
+  if (gsap && ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    const motion = gsap.matchMedia();
+
+    motion.add("(prefers-reduced-motion: no-preference)", () => {
+      const progress = document.querySelector(".story-progress");
+      gsap.to(progress, {
+        scaleX: 1,
+        opacity: .72,
+        ease: "none",
+        scrollTrigger: {
+          start: 0,
+          end: () => Math.max(1, ScrollTrigger.maxScroll(window)),
+          scrub: true
+        }
+      });
+
+      gsap.to(".shell .col-main", {
+        y: -36,
+        ease: "none",
+        scrollTrigger: { trigger: ".shell", start: "top top", end: "bottom top", scrub: .55 }
+      });
+
+      document.querySelectorAll(".section").forEach((section) => {
+        gsap.to(section, {
+          "--chapter-progress": 1,
+          ease: "none",
+          scrollTrigger: { trigger: section, start: "top 92%", end: "top 42%", scrub: .4 }
+        });
+
+        section.querySelectorAll("[data-reveal]").forEach((element) => {
+          const inView = element.getBoundingClientRect().top < window.innerHeight;
+          if (inView) return;
+          gsap.from(element, {
+            opacity: .28,
+            y: element.classList.contains("section-head") ? 30 : 18,
+            duration: .72,
+            ease: "power3.out",
+            scrollTrigger: { trigger: element, start: "top 92%", once: true }
+          });
+        });
+      });
+    });
+
+    motion.add("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
+      const zones = ".shell, .section, .tag, .stat, .trow, .edu-row";
+      const halo = document.querySelector(".cursor-halo");
+      const spotlights = [...document.querySelectorAll(zones)].map((zone) => {
+        const layer = document.createElement("span");
+        layer.className = "spotlight";
+        layer.setAttribute("aria-hidden", "true");
+        zone.prepend(layer);
+        return layer;
+      });
+      const xTo = gsap.quickTo(halo, "x", { duration: .22, ease: "power3.out" });
+      const yTo = gsap.quickTo(halo, "y", { duration: .22, ease: "power3.out" });
+      const fade = gsap.quickTo(halo, "opacity", { duration: .22 });
+      let active = [];
+      let point = null;
+      let frame = 0;
+
+      function render() {
+        frame = 0;
+        if (!point) return;
+
+        const { clientX, clientY } = point;
+        const hit = document.elementFromPoint(clientX, clientY);
+        const area = hit?.closest(".shell, .section");
+        const detail = hit?.closest(".tag, .stat, .trow, .edu-row");
+        const zonesAtPointer = [area, detail].filter(Boolean);
+        active.forEach((zone) => {
+          if (!zonesAtPointer.includes(zone)) zone.classList.remove("is-lit");
+        });
+        zonesAtPointer.forEach((zone) => {
+          const rect = zone.getBoundingClientRect();
+          zone.style.setProperty("--spot-x", clientX - rect.left + "px");
+          zone.style.setProperty("--spot-y", clientY - rect.top + "px");
+          zone.classList.add("is-lit");
+        });
+
+        xTo(clientX - 15);
+        yTo(clientY - 15);
+        if (Boolean(active.length) !== Boolean(zonesAtPointer.length)) fade(zonesAtPointer.length ? 1 : 0);
+        active = zonesAtPointer;
+      }
+
+      function queueRender() {
+        if (point && !frame) frame = requestAnimationFrame(render);
+      }
+
+      function move(event) {
+        if (event.pointerType !== "mouse") return;
+        if (!point) {
+          xTo(event.clientX - 15, event.clientX - 15);
+          yTo(event.clientY - 15, event.clientY - 15);
+        }
+        point = event;
+        queueRender();
+      }
+
+      function clear() {
+        cancelAnimationFrame(frame);
+        frame = 0;
+        point = null;
+        fade(0);
+        active.forEach((zone) => zone.classList.remove("is-lit"));
+        active = [];
+      }
+
+      window.addEventListener("pointermove", move, { passive: true });
+      window.addEventListener("scroll", queueRender, { passive: true });
+      document.documentElement.addEventListener("pointerleave", clear);
+      window.addEventListener("blur", clear);
+
+      return () => {
+        clear();
+        window.removeEventListener("pointermove", move);
+        window.removeEventListener("scroll", queueRender);
+        document.documentElement.removeEventListener("pointerleave", clear);
+        window.removeEventListener("blur", clear);
+        spotlights.forEach((layer) => layer.remove());
+      };
+    });
+  }
+
+  const toastEl = document.getElementById('toast');
+  let toastTimer = null;
+  function showToast(msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
+  }
+  document.querySelectorAll('[data-copy-email]').forEach((el) => {
+    el.addEventListener('click', () => {
+      const email = el.getAttribute('href').replace('mailto:', '').split('?')[0];
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email)
+          .then(() => showToast('E-mail copiado — ' + email))
+          .catch(() => showToast(email));
+      } else {
+        showToast(email);
+      }
+    });
+  });
+</script>
+</body>
+</html>
